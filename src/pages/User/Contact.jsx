@@ -138,7 +138,7 @@ const Contact = () => {
                                     color: isDark ? "text-blue-300 bg-blue-400/10" : "text-blue-700 bg-blue-100"
                                 },
                                 {
-                                    href: `https://wa.me/${contactInfo.whatsapp.replace(/[^0-9]/g, '')}`,
+                                    href: `https://wa.me/${(contactInfo.whatsapp || '').replace(/[^0-9]/g, '')}`,
                                     icon: <FaWhatsapp size={18} />,
                                     title: "WhatsApp",
                                     subtitle: "Message on WhatsApp",
