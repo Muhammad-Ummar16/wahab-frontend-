@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Award, ArrowRight } from 'lucide-react';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 
 const Certificates = () => {
-    const [certificates, setCertificates] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: certificates, isLoading } = useQuery({
+        queryKey: ['certifications'],
+        queryFn: async () => {
+            console.log("Fetching Certificates from:", `${API_URL}/api/certifications`);
+            const res = await axios.get(`${API_URL}/api/certifications`);
+            console.log("Certificates received:", res.data);
+            return res.data;
+        },
+    });
 
-    useEffect(() => {
-        const fetchCerts = async () => {
-            try {
-                console.log("Fetching Certificates from:", `${API_URL}/api/certifications`);
-                const res = await axios.get(`${API_URL}/api/certifications`);
-                console.log("Certificates received:", res.data);
-                setCertificates(res.data);
-            } catch (error) {
-                console.error("Error fetching certificates:", error.response || error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCerts();
-    }, []);
-
-    if (loading) return (
+    if (isLoading) return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div>
         </div>
     );
 
     return (
-        <section id="certificates" className="pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <section id="certificates" className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-cyan-400 font-mono tracking-widest text-sm md:text-base uppercase underline decoration-2 underline-offset-8">Validation</h2>

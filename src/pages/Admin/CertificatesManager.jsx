@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Plus, Trash2, Edit2, X, Check, Upload, Award } from 'lucide-react';
 import toast from 'react-hot-toast';
 import API_URL from '../../config';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const CertificatesManager = () => {
-    const [items, setItems] = useState([]);
+    const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -17,19 +18,42 @@ const CertificatesManager = () => {
     });
     const [uploading, setUploading] = useState(false);
 
-    const fetchItems = async () => {
-        try {
-            const res = await axios.get(`${API_URL}/api/certifications`);
-            setItems(res.data);
-        } catch (error) {
-            console.error("Error fetching certifications:", error);
-            toast.error("Failed to load certifications");
-        }
-    };
+    const { data: items = [], isLoading } = useQuery({
+        queryKey: ['certifications'],
+        queryFn: () => axios.get(`${API_URL}/api/certifications`).then(res => res.data)
+    });
 
-    useEffect(() => {
-        fetchItems();
-    }, []);
+    const mutation = useMutation({
+        mutationFn: async (data) => {
+            if (isEditing) {
+                return axios.put(`${API_URL}/api/certifications/${isEditing}`, data);
+            }
+            return axios.post(`${API_URL}/api/certifications`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['certifications']);
+            toast.success(isEditing ? 'Certification updated' : 'New certification added');
+            setIsEditing(null);
+            setFormData({
+                name: '',
+                issuer: '',
+                year: '',
+                image: '',
+                fullDescription: '',
+                verificationLink: ''
+            });
+        },
+        onError: () => toast.error('Failed to save item')
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => axios.delete(`${API_URL}/api/certifications/${id}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['certifications']);
+            toast.success('Deleted successfully');
+        },
+        onError: () => toast.error('Failed to delete')
+    });
 
     const handleFileUpload = async (e) => {
         const file = e.target.files[0];
@@ -54,30 +78,9 @@ const CertificatesManager = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            if (isEditing) {
-                await axios.put(`${API_URL}/api/certifications/${isEditing}`, formData);
-                toast.success('Certification updated');
-            } else {
-                await axios.post(`${API_URL}/api/certifications`, formData);
-                toast.success('New certification added');
-            }
-            setIsEditing(null);
-            setFormData({
-                name: '',
-                issuer: '',
-                year: '',
-                image: '',
-                fullDescription: '',
-                verificationLink: ''
-            });
-            fetchItems();
-        } catch (error) {
-            console.error("Error saving certification:", error);
-            toast.error('Failed to save item');
-        }
+        mutation.mutate(formData);
     };
 
     const handleEdit = (item) => {
@@ -85,15 +88,9 @@ const CertificatesManager = () => {
         setFormData(item);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this certification?")) {
-            try {
-                await axios.delete(`${API_URL}/api/certifications/${id}`);
-                fetchItems();
-                toast.success('Deleted successfully');
-            } catch (error) {
-                toast.error('Failed to delete');
-            }
+            deleteMutation.mutate(id);
         }
     };
 

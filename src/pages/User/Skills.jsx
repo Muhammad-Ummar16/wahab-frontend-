@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Share2, PenTool, BarChart3 } from 'lucide-react';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 const Skills = () => {
-    const [skillCategories, setSkillCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: skillCategories, isLoading } = useQuery({
+        queryKey: ['skills'],
+        queryFn: async () => {
+            console.log("Fetching Skills from:", `${API_URL}/api/skills`);
+            const res = await axios.get(`${API_URL}/api/skills`);
+            console.log("Skills received:", res.data);
+            return res.data;
+        },
+    });
 
     const getIcon = (title) => {
         const lowerTitle = title.toLowerCase();
@@ -15,25 +23,10 @@ const Skills = () => {
         return <Share2 size={24} />;
     };
 
-    useEffect(() => {
-        const fetchSkills = async () => {
-            try {
-                console.log("Fetching Skills from:", `${API_URL}/api/skills`);
-                const res = await axios.get(`${API_URL}/api/skills`);
-                console.log("Skills received:", res.data);
-                setSkillCategories(res.data);
-            } catch (error) {
-                console.error("Error fetching skills:", error.response || error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchSkills();
-    }, []);
-    if (loading) return null;
+    if (isLoading) return null;
 
     return (
-        <section id="skills" className="pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <section id="skills" className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-cyan-400 font-mono tracking-widest text-sm md:text-base uppercase">Expertise</h2>

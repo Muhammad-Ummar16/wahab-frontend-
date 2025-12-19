@@ -1,38 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 const Hero = () => {
-    const [heroData, setHeroData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { data: heroData, isLoading } = useQuery({
+        queryKey: ['hero'],
+        queryFn: async () => {
+            console.log("Fetching Hero data from:", `${API_URL}/api/hero`);
+            const res = await axios.get(`${API_URL}/api/hero`);
+            console.log("Hero data received:", res.data);
 
-    useEffect(() => {
-        const fetchHero = async () => {
-            try {
-                console.log("Fetching Hero data from:", `${API_URL}/api/hero`);
-                const res = await axios.get(`${API_URL}/api/hero`);
-                console.log("Hero data received:", res.data);
-                
-                // Robustness: If the backend returns an array instead of a single object (e.g. from json-server)
-                if (Array.isArray(res.data)) {
-                    setHeroData(res.data[0]);
-                } else {
-                    setHeroData(res.data);
-                }
-            } catch (error) {
-                console.error("Error fetching hero data:", error.response || error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchHero();
-    }, []);
+            // Robustness: If the backend returns an array instead of a single object (e.g. from json-server)
+            return Array.isArray(res.data) ? res.data[0] : res.data;
+        },
+    });
 
-    if (loading || !heroData) return null;
+    if (isLoading || !heroData) return null;
 
     return (
-        <section id="home" className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden bg-transparent">
+        <section id="home" className="relative min-h-screen flex items-center pt-8 md:pt-28 pb-20 overflow-hidden bg-transparent">
             {/* Global Background is now handled by UserLayout */}
 
             <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -51,6 +39,22 @@ const Hero = () => {
                         <p className="max-w-xl text-slate-400 text-base md:text-lg leading-relaxed">
                             {heroData.description}
                         </p>
+                    </div>
+
+                    {/* Mobile Image - Shown after description on small screens */}
+                    <div className="lg:hidden relative flex justify-center items-center py-4">
+                        <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80">
+                            <div className="absolute inset-0 bg-cyan-500 rounded-full blur-[80px] opacity-20 animate-pulse"></div>
+                            <div className="absolute -inset-4 border border-cyan-500/10 rounded-full animate-spin-slow"></div>
+                            <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border-4 border-slate-900">
+                                <img
+                                    src={heroData.image}
+                                    alt={`${heroData.name} ${heroData.lastName}`}
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
@@ -99,9 +103,9 @@ const Hero = () => {
                     </div>
                 </div>
 
-                {/* Right Content - Image */}
-                <div className="relative flex justify-center items-center animate-in fade-in slide-in-from-right duration-1000 lg:justify-end">
-                    <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-[420px] lg:h-[420px]">
+                {/* Right Content - Image (Desktop only) */}
+                <div className="hidden lg:flex relative justify-center items-center animate-in fade-in slide-in-from-right duration-1000 lg:justify-end">
+                    <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-[420px] lg:h-[420px]">
                         {/* Background decorative elements */}
                         <div className="absolute inset-0 bg-cyan-500 rounded-full blur-[100px] opacity-20 animate-pulse"></div>
                         <div className="absolute -inset-6 border border-cyan-500/10 rounded-full animate-spin-slow"></div>

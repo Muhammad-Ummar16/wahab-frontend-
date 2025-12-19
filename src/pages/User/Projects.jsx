@@ -1,36 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { ExternalLink } from 'lucide-react';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 const Projects = () => {
-    const [projects, setProjects] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const { data: projects, isLoading } = useQuery({
+        queryKey: ['projects'],
+        queryFn: async () => {
+            console.log("Fetching Projects from:", `${API_URL}/api/projects`);
+            const res = await axios.get(`${API_URL}/api/projects`);
+            console.log("Projects received:", res.data);
+            return res.data;
+        },
+    });
 
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                console.log("Fetching Projects from:", `${API_URL}/api/projects`);
-                const res = await axios.get(`${API_URL}/api/projects`);
-                console.log("Projects received:", res.data);
-                setProjects(res.data);
-            } catch (error) {
-                console.error("Error fetching projects:", error.response || error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProjects();
-    }, []);
-
-    if (loading) return (
+    if (isLoading) return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div>
         </div>
     );
 
     return (
-        <section id="projects" className="pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <section id="projects" className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-cyan-400 font-mono tracking-widest text-sm md:text-base uppercase">Portfolio</h2>

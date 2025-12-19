@@ -1,41 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Plus, Trash2, Edit2, X, Check } from 'lucide-react';
 import toast from 'react-hot-toast';
 import API_URL from '../../config';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 const EducationManager = () => {
-    const [items, setItems] = useState([]);
+    const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(null);
     const [formData, setFormData] = useState({ year: '', degree: '', institution: '', description: '', stats: '' });
 
-    const fetchItems = async () => {
-        const res = await axios.get(`${API_URL}/api/education`);
-        setItems(res.data);
-    };
+    const { data: items = [], isLoading } = useQuery({
+        queryKey: ['education'],
+        queryFn: () => axios.get(`${API_URL}/api/education`).then(res => res.data)
+    });
 
-    useEffect(() => {
-        fetchItems();
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
+    const mutation = useMutation({
+        mutationFn: async (data) => {
             if (isEditing) {
-                await axios.put(`${API_URL}/api/education/${isEditing}`, formData);
-                toast.success('Education item updated');
-            } else {
-                await axios.post(`${API_URL}/api/education`, formData);
-                toast.success('New education item added');
+                return axios.put(`${API_URL}/api/education/${isEditing}`, data);
             }
+            return axios.post(`${API_URL}/api/education`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['education']);
+            toast.success(isEditing ? 'Education item updated' : 'New education item added');
             setIsEditing(null);
             setFormData({ year: '', degree: '', institution: '', description: '', stats: '' });
-            fetchItems();
-        } catch (error) {
-            console.error("Error saving education item:", error);
-            toast.error('Failed to save item');
-        }
+        },
+        onError: () => toast.error('Failed to save item')
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => axios.delete(`${API_URL}/api/education/${id}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['education']);
+            toast.success('Item deleted successfully');
+        },
+        onError: () => toast.error('Failed to delete item')
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        mutation.mutate(formData);
     };
 
     const handleEdit = (item) => {
@@ -43,15 +51,9 @@ const EducationManager = () => {
         setFormData(item);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
-            try {
-                await axios.delete(`${API_URL}/api/education/${id}`);
-                fetchItems();
-                toast.success('Item deleted successfully');
-            } catch (error) {
-                toast.error('Failed to delete item');
-            }
+            deleteMutation.mutate(id);
         }
     };
 

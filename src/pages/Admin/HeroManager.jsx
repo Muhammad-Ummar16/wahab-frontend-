@@ -1,11 +1,12 @@
-import toast from 'react-hot-toast';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
+import { Save, Upload } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import API_URL from '../../config';
 
-
-import { Save, Upload } from 'lucide-react';
 const HeroManager = () => {
+    const queryClient = useQueryClient();
     const [formData, setFormData] = useState({
         name: '',
         lastName: '',
@@ -16,24 +17,26 @@ const HeroManager = () => {
         image: '',
         cvUrl: ''
     });
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState({ image: false, cv: false });
 
-    useEffect(() => {
-        const fetchHero = async () => {
-            try {
-                const res = await axios.get(`${API_URL}/api/hero`);
-                setFormData(res.data);
-            } catch (error) {
-                console.error("Error fetching hero data:", error);
-                toast.error("Failed to load hero data");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchHero();
-    }, []);
+    const { isLoading } = useQuery({
+        queryKey: ['hero'],
+        queryFn: async () => {
+            const res = await axios.get(`${API_URL}/api/hero`);
+            const data = Array.isArray(res.data) ? res.data[0] : res.data;
+            if (data) setFormData(data);
+            return data;
+        },
+    });
+
+    const mutation = useMutation({
+        mutationFn: (data) => axios.put(`${API_URL}/api/hero`, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['hero']);
+            toast.success('Hero section updated!');
+        },
+        onError: () => toast.error('Failed to update hero section.')
+    });
 
     const handleFileUpload = async (e, type) => {
         const file = e.target.files[0];
@@ -60,21 +63,16 @@ const HeroManager = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setSaving(true);
-        try {
-            await axios.put(`${API_URL}/api/hero`, formData);
-            toast.success('Hero section updated!');
-        } catch (error) {
-            console.error("Error updating hero:", error);
-            toast.error('Failed to update hero section.');
-        } finally {
-            setSaving(false);
-        }
+        mutation.mutate(formData);
     };
 
-    if (loading) return null;
+    if (isLoading) return (
+        <div className="h-96 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div>
+        </div>
+    );
 
     return (
         <div className="max-w-4xl space-y-8">
@@ -89,7 +87,7 @@ const HeroManager = () => {
                         <input
                             type="text"
                             className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
-                            value={formData.name}
+                            value={formData.name || ''}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
                         />
@@ -99,7 +97,7 @@ const HeroManager = () => {
                         <input
                             type="text"
                             className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
-                            value={formData.lastName}
+                            value={formData.lastName || ''}
                             onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                             required
                         />
@@ -111,7 +109,7 @@ const HeroManager = () => {
                     <input
                         type="text"
                         className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
-                        value={formData.role}
+                        value={formData.role || ''}
                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                         required
                     />
@@ -121,7 +119,7 @@ const HeroManager = () => {
                     <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Short Bio / Description</label>
                     <textarea
                         className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all h-32"
-                        value={formData.description}
+                        value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         required
                     />
@@ -133,7 +131,7 @@ const HeroManager = () => {
                         <input
                             type="text"
                             className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
-                            value={formData.experience}
+                            value={formData.experience || ''}
                             onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                             required
                         />
@@ -143,7 +141,7 @@ const HeroManager = () => {
                         <input
                             type="text"
                             className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
-                            value={formData.projects}
+                            value={formData.projects || ''}
                             onChange={(e) => setFormData({ ...formData, projects: e.target.value })}
                             required
                         />
@@ -163,7 +161,7 @@ const HeroManager = () => {
                             <input
                                 type="text"
                                 className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 transition-all font-mono text-xs bg-slate-50"
-                                value={formData.image}
+                                value={formData.image || ''}
                                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                                 placeholder="Paste image URL or upload below"
                             />
@@ -194,7 +192,7 @@ const HeroManager = () => {
                             <input
                                 type="text"
                                 className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 transition-all font-mono text-xs bg-slate-50"
-                                value={formData.cvUrl}
+                                value={formData.cvUrl || ''}
                                 onChange={(e) => setFormData({ ...formData, cvUrl: e.target.value })}
                                 placeholder="Paste CV link or upload below"
                             />
@@ -221,11 +219,11 @@ const HeroManager = () => {
                 <div className="pt-8 block">
                     <button
                         type="submit"
-                        disabled={saving}
+                        disabled={mutation.isPending}
                         className="bg-cyan-600 text-white px-10 py-4 rounded-xl hover:bg-cyan-700 flex items-center gap-3 font-black uppercase tracking-widest transition-all disabled:opacity-50 shadow-lg shadow-cyan-600/20 active:scale-95"
                     >
                         <Save size={20} />
-                        {saving ? 'Saving Changes...' : 'Save All Settings'}
+                        {mutation.isPending ? 'Saving Changes...' : 'Save All Settings'}
                     </button>
                 </div>
             </form>

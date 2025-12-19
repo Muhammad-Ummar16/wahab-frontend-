@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { Award, Calendar, Building, CheckCircle2, ArrowLeft, ExternalLink } from 'lucide-react';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 
 const CertificateDetail = () => {
     const { id } = useParams();
-    const [cert, setCert] = useState(null);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchCert = async () => {
-            try {
-                console.log("Fetching Certificate Detail from:", `${API_URL}/api/certifications`);
-                const res = await axios.get(`${API_URL}/api/certifications`);
-                console.log("Certifications received for detail:", res.data);
+    const { data: cert, isLoading } = useQuery({
+        queryKey: ['certifications', id],
+        queryFn: async () => {
+            console.log("Fetching Certificate Detail from:", `${API_URL}/api/certifications`);
+            const res = await axios.get(`${API_URL}/api/certifications`);
+            console.log("Certifications received for detail:", res.data);
 
-                // Since our toy backend returns an array for certifications, we find the one by ID
-                const found = (res.data || []).find(c => c.id.toString() === id);
-                setCert(found);
-            } catch (error) {
-                console.error("Error fetching certificate detail:", error.response || error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCert();
-    }, [id]);
+            // Since our toy backend returns an array for certifications, we find the one by ID
+            return (res.data || []).find(c => c.id.toString() === id);
+        },
+    });
 
-    if (loading) return (
+    if (isLoading) return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div>
         </div>
@@ -45,7 +37,7 @@ const CertificateDetail = () => {
     );
 
     return (
-        <div className="pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <div className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <Link to="/#certificates" className="inline-flex items-center gap-2 text-slate-400 hover:text-cyan-400 transition-colors mb-12 font-bold uppercase text-xs tracking-widest">
                     <ArrowLeft size={16} /> All Certificates

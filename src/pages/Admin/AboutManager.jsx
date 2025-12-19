@@ -1,10 +1,12 @@
-import toast from 'react-hot-toast';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { Save } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import API_URL from '../../config';
 
 const AboutManager = () => {
+    const queryClient = useQueryClient();
     const [formData, setFormData] = useState({
         mission: '',
         vision: '',
@@ -12,39 +14,36 @@ const AboutManager = () => {
         bio2: '',
         image: ''
     });
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
 
-    useEffect(() => {
-        const fetchAbout = async () => {
-            try {
-                const res = await axios.get(`${API_URL}/api/about`);
-                setFormData(res.data);
-            } catch (error) {
-                console.error("Error fetching about data:", error);
-                toast.error("Failed to load about data");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchAbout();
-    }, []);
+    const { isLoading } = useQuery({
+        queryKey: ['about'],
+        queryFn: async () => {
+            const res = await axios.get(`${API_URL}/api/about`);
+            const data = Array.isArray(res.data) ? res.data[0] : res.data;
+            if (data) setFormData(data);
+            return data;
+        },
+    });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setSaving(true);
-        try {
-            await axios.put(`${API_URL}/api/about`, formData);
+    const mutation = useMutation({
+        mutationFn: (data) => axios.put(`${API_URL}/api/about`, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['about']);
             toast.success('About section updated!');
-        } catch (error) {
-            console.error("Error updating about:", error);
-            toast.error('Update failed.');
-        } finally {
-            setSaving(false);
-        }
+        },
+        onError: () => toast.error('Update failed.')
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        mutation.mutate(formData);
     };
 
-    if (loading) return null;
+    if (isLoading) return (
+        <div className="h-96 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div>
+        </div>
+    );
 
     return (
         <div className="max-w-4xl space-y-8">
@@ -107,11 +106,11 @@ const AboutManager = () => {
                 <div className="pt-4 flex justify-end">
                     <button
                         type="submit"
-                        disabled={saving}
+                        disabled={mutation.isPending}
                         className="bg-slate-900 text-white px-10 py-4 rounded-xl hover:bg-slate-800 flex items-center gap-3 font-black uppercase tracking-widest transition-all disabled:opacity-50"
                     >
                         <Save size={20} />
-                        {saving ? 'Updating...' : 'Update About Section'}
+                        {mutation.isPending ? 'Updating...' : 'Update About Section'}
                     </button>
                 </div>
             </form>

@@ -1,46 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 
 const About = () => {
-    const [aboutData, setAboutData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { data: aboutData, isLoading } = useQuery({
+        queryKey: ['about'],
+        queryFn: async () => {
+            console.log("Fetching About data from:", `${API_URL}/api/about`);
+            const res = await axios.get(`${API_URL}/api/about`);
+            console.log("About data received:", res.data);
 
-    useEffect(() => {
-        const fetchAbout = async () => {
-            try {
-                console.log("Fetching About data from:", `${API_URL}/api/about`);
-                const res = await axios.get(`${API_URL}/api/about`);
-                console.log("About data received:", res.data);
+            // Handle both object and array response
+            return Array.isArray(res.data) ? res.data[0] : res.data;
+        },
+    });
 
-                // Handle both object and array response
-                if (Array.isArray(res.data)) {
-                    setAboutData(res.data[0]);
-                } else {
-                    setAboutData(res.data);
-                }
-            } catch (error) {
-                console.error("Error fetching about data:", error.response || error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchAbout();
-    }, []);
-
-    if (loading || !aboutData) return (
+    if (isLoading || !aboutData) return (
         <div className="min-h-[50vh] flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-500"></div>
         </div>
     );
 
     return (
-        <section id="about" className="pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <section id="about" className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
                     {/* Image Column - Reduced Size & Premium Framing */}
-                    <div className="w-full md:w-5/12 relative group">
+                    <div className="hidden md:block w-full md:w-5/12 relative group">
                         <div className="absolute -inset-6 bg-cyan-500/10 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                         <div className="relative rounded-3xl overflow-hidden border-4 border-slate-900 bg-slate-900 shadow-2xl group">
                             <div className="absolute inset-0 border-2 border-cyan-500/10 group-hover:border-cyan-500/30 transition-colors duration-500 z-10 pointer-events-none"></div>

@@ -1,45 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Plus, Trash2, Edit2, X, Check, Layers } from 'lucide-react';
 import toast from 'react-hot-toast';
 import API_URL from '../../config';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const SkillsManager = () => {
-    const [categories, setCategories] = useState([]);
+    const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(null);
     const [formData, setFormData] = useState({ title: '', skills: [] });
     const [newSkill, setNewSkill] = useState({ name: '', level: 80 });
 
-    const fetchCategories = async () => {
-        try {
-            const res = await axios.get(`${API_URL}/api/skills`);
-            setCategories(res.data);
-        } catch (error) {
-            console.error("Error fetching skills:", error);
-        }
-    };
+    const { data: categories = [], isLoading } = useQuery({
+        queryKey: ['skills'],
+        queryFn: () => axios.get(`${API_URL}/api/skills`).then(res => res.data)
+    });
 
-    useEffect(() => {
-        fetchCategories();
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
+    const mutation = useMutation({
+        mutationFn: async (data) => {
             if (isEditing) {
-                await axios.put(`${API_URL}/api/skills/${isEditing}`, formData);
-                toast.success('Skill category updated');
-            } else {
-                await axios.post(`${API_URL}/api/skills`, formData);
-                toast.success('New category created');
+                return axios.put(`${API_URL}/api/skills/${isEditing}`, data);
             }
+            return axios.post(`${API_URL}/api/skills`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['skills']);
+            toast.success(isEditing ? 'Skill category updated' : 'New category created');
             setIsEditing(null);
             setFormData({ title: '', skills: [] });
-            fetchCategories();
-        } catch (error) {
-            console.error("Error saving skill category:", error);
-            toast.error('Failed to save category');
-        }
+        },
+        onError: () => toast.error('Failed to save category')
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => axios.delete(`${API_URL}/api/skills/${id}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['skills']);
+            toast.success('Category removed');
+        },
+        onError: () => toast.error('Failed to delete category')
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        mutation.mutate(formData);
     };
 
     const handleEdit = (category) => {
@@ -47,15 +51,9 @@ const SkillsManager = () => {
         setFormData(category);
     };
 
-    const handleDeleteCategory = async (id) => {
+    const handleDeleteCategory = (id) => {
         if (window.confirm("Delete this entire category?")) {
-            try {
-                await axios.delete(`${API_URL}/api/skills/${id}`);
-                fetchCategories();
-                toast.success('Category removed');
-            } catch (error) {
-                toast.error('Failed to delete category');
-            }
+            deleteMutation.mutate(id);
         }
     };
 

@@ -1,34 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Save } from 'lucide-react';
 import API_URL from '../../config';
+import { useQuery } from '@tanstack/react-query';
 
 const AdminDashboard = () => {
-    const [stats, setStats] = useState({
-        education: 0,
-        skills: 0,
-        certifications: 0
-    });
+    const { data: eduData } = useQuery({ queryKey: ['education'], queryFn: () => axios.get(`${API_URL}/api/education`).then(r => r.data) });
+    const { data: skillsData } = useQuery({ queryKey: ['skills'], queryFn: () => axios.get(`${API_URL}/api/skills`).then(r => r.data) });
+    const { data: certsData } = useQuery({ queryKey: ['certifications'], queryFn: () => axios.get(`${API_URL}/api/certifications`).then(r => r.data) });
 
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const [edu, skills, certs] = await Promise.all([
-                    axios.get(`${API_URL}/api/education`),
-                    axios.get(`${API_URL}/api/skills`),
-                    axios.get(`${API_URL}/api/certifications`)
-                ]);
-                setStats({
-                    education: (edu.data || []).length,
-                    skills: (skills.data || []).length,
-                    certifications: (certs.data || []).length
-                });
-            } catch (error) {
-                console.error("Error fetching stats:", error);
-            }
-        };
-        fetchStats();
-    }, []);
+    const stats = {
+        education: (eduData || []).length,
+        skills: (skillsData || []).length,
+        certifications: (certsData || []).length
+    };
 
     const cards = [
         { name: 'Education Items', value: stats.education, color: 'bg-blue-500' },

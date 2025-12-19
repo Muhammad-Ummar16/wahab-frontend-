@@ -1,44 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Plus, Trash2, Edit2, X, Check, ExternalLink } from 'lucide-react';
 import toast from 'react-hot-toast';
 import API_URL from '../../config';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const ProjectManager = () => {
-    const [projects, setProjects] = useState([]);
+    const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(null);
     const [formData, setFormData] = useState({ title: '', category: '', description: '', link: '' });
 
-    const fetchProjects = async () => {
-        try {
-            const res = await axios.get(`${API_URL}/api/projects`);
-            setProjects(res.data);
-        } catch (error) {
-            console.error("Error fetching projects:", error);
-        }
-    };
+    const { data: projects = [], isLoading } = useQuery({
+        queryKey: ['projects'],
+        queryFn: () => axios.get(`${API_URL}/api/projects`).then(res => res.data)
+    });
 
-    useEffect(() => {
-        fetchProjects();
-    }, []);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
+    const mutation = useMutation({
+        mutationFn: async (data) => {
             if (isEditing) {
-                await axios.put(`${API_URL}/api/projects/${isEditing}`, formData);
-                toast.success('Project updated');
-            } else {
-                await axios.post(`${API_URL}/api/projects`, formData);
-                toast.success('New project added');
+                return axios.put(`${API_URL}/api/projects/${isEditing}`, data);
             }
+            return axios.post(`${API_URL}/api/projects`, data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries(['projects']);
+            toast.success(isEditing ? 'Project updated' : 'New project added');
             setIsEditing(null);
             setFormData({ title: '', category: '', description: '', link: '' });
-            fetchProjects();
-        } catch (error) {
-            console.error("Error saving project:", error);
-            toast.error('Could not save project');
-        }
+        },
+        onError: () => toast.error('Could not save project')
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => axios.delete(`${API_URL}/api/projects/${id}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['projects']);
+            toast.success('Project deleted');
+        },
+        onError: () => toast.error('Failed to delete project')
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        mutation.mutate(formData);
     };
 
     const handleEdit = (project) => {
@@ -46,15 +50,9 @@ const ProjectManager = () => {
         setFormData(project);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         if (window.confirm("Delete this project?")) {
-            try {
-                await axios.delete(`${API_URL}/api/projects/${id}`);
-                fetchProjects();
-                toast.success('Project deleted');
-            } catch (error) {
-                toast.error('Failed to delete project');
-            }
+            deleteMutation.mutate(id);
         }
     };
 
