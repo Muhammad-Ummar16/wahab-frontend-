@@ -20,7 +20,7 @@ const Hero = () => {
     if (isLoading || !heroData) return null;
 
     return (
-        <section id="home" className="relative min-h-screen flex items-center pt-8 md:pt-28 pb-20 overflow-hidden bg-transparent">
+        <section id="home" className="relative min-h-screen flex items-center pt-26 md:pt-28 pb-20 overflow-hidden bg-transparent">
             {/* Global Background is now handled by UserLayout */}
 
             <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-10 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

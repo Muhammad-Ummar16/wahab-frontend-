@@ -24,7 +24,7 @@ const About = () => {
     );
 
     return (
-        <section id="about" className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <section id="about" className="pt-2 md:pt-20 pb-20 bg-transparent font-sans text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24">
                 <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
                     {/* Image Column - Reduced Size & Premium Framing */}

@@ -22,7 +22,7 @@ const Education = () => {
     );
 
     return (
-        <section id="education" className="pt-16 md:pt-32 pb-20 bg-transparent font-sans text-white min-h-screen">
+        <section id="education" className="pt-16 md:pt-26 pb-20 bg-transparent font-sans sm:pb-1 text-white min-h-screen">
             <div className="container mx-auto px-6 md:px-12 lg:px-24 focus:outline-none">
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-cyan-400 font-mono tracking-widest text-sm md:text-base uppercase underline decoration-2 underline-offset-8">Qualifications</h2>
