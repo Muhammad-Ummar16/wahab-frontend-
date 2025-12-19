@@ -12,10 +12,12 @@ const Certificates = () => {
     useEffect(() => {
         const fetchCerts = async () => {
             try {
+                console.log("Fetching Certificates from:", `${API_URL}/api/certifications`);
                 const res = await axios.get(`${API_URL}/api/certifications`);
+                console.log("Certificates received:", res.data);
                 setCertificates(res.data);
             } catch (error) {
-                console.error("Error fetching certificates:", error);
+                console.error("Error fetching certificates:", error.response || error);
             } finally {
                 setLoading(false);
             }

@@ -18,10 +18,12 @@ const Skills = () => {
     useEffect(() => {
         const fetchSkills = async () => {
             try {
+                console.log("Fetching Skills from:", `${API_URL}/api/skills`);
                 const res = await axios.get(`${API_URL}/api/skills`);
+                console.log("Skills received:", res.data);
                 setSkillCategories(res.data);
             } catch (error) {
-                console.error("Error fetching skills:", error);
+                console.error("Error fetching skills:", error.response || error);
             } finally {
                 setLoading(false);
             }

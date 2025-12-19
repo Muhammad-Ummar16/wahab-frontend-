@@ -10,10 +10,12 @@ const Education = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log("Fetching Education from:", `${API_URL}/api/education`);
                 const res = await axios.get(`${API_URL}/api/education`);
+                console.log("Education received:", res.data);
                 setEducationData(res.data);
             } catch (error) {
-                console.error("Error fetching education data:", error);
+                console.error("Error fetching education data:", error.response || error);
             } finally {
                 setLoading(false);
             }

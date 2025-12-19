@@ -10,10 +10,18 @@ const Hero = () => {
     useEffect(() => {
         const fetchHero = async () => {
             try {
+                console.log("Fetching Hero data from:", `${API_URL}/api/hero`);
                 const res = await axios.get(`${API_URL}/api/hero`);
-                setHeroData(res.data);
+                console.log("Hero data received:", res.data);
+                
+                // Robustness: If the backend returns an array instead of a single object (e.g. from json-server)
+                if (Array.isArray(res.data)) {
+                    setHeroData(res.data[0]);
+                } else {
+                    setHeroData(res.data);
+                }
             } catch (error) {
-                console.error("Error fetching hero data:", error);
+                console.error("Error fetching hero data:", error.response || error);
             } finally {
                 setLoading(false);
             }

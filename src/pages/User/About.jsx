@@ -10,10 +10,18 @@ const About = () => {
     useEffect(() => {
         const fetchAbout = async () => {
             try {
+                console.log("Fetching About data from:", `${API_URL}/api/about`);
                 const res = await axios.get(`${API_URL}/api/about`);
-                setAboutData(res.data);
+                console.log("About data received:", res.data);
+
+                // Handle both object and array response
+                if (Array.isArray(res.data)) {
+                    setAboutData(res.data[0]);
+                } else {
+                    setAboutData(res.data);
+                }
             } catch (error) {
-                console.error("Error fetching about data:", error);
+                console.error("Error fetching about data:", error.response || error);
             } finally {
                 setLoading(false);
             }

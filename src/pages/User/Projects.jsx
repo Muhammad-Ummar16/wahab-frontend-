@@ -10,10 +10,12 @@ const Projects = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
+                console.log("Fetching Projects from:", `${API_URL}/api/projects`);
                 const res = await axios.get(`${API_URL}/api/projects`);
+                console.log("Projects received:", res.data);
                 setProjects(res.data);
             } catch (error) {
-                console.error("Error fetching projects:", error);
+                console.error("Error fetching projects:", error.response || error);
             } finally {
                 setLoading(false);
             }
