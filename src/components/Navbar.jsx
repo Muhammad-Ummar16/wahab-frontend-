@@ -128,7 +128,7 @@ const Navbar = () => {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.3 }}
                             onClick={() => setIsMenuOpen(false)}
-                            className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[50] lg:hidden"
+                            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[90] lg:hidden"
                         />
 
                         {/* Sidebar */}
@@ -137,10 +137,10 @@ const Navbar = () => {
                             animate={{ x: 0 }}
                             exit={{ x: "-100%" }}
                             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                            className="fixed top-0 left-0 bottom-0 w-[280px] bg-slate-950/98 backdrop-blur-2xl border-r border-slate-800 z-[60] flex flex-col shadow-2xl lg:hidden"
+                            className="fixed top-0 left-0 bottom-0 w-[280px] bg-slate-950 border-r border-slate-800 z-[100] flex flex-col shadow-2xl lg:hidden"
                         >
                             {/* Sidebar Header */}
-                            <div className="p-8 pb-4 flex justify-between items-center border-b border-slate-900/50">
+                            <div className="p-6 flex justify-between items-center border-b border-slate-900">
                                 <Link
                                     to="/"
                                     onClick={() => handleLinkClick("#home")}
@@ -151,25 +151,25 @@ const Navbar = () => {
                                 </Link>
                                 <button
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="p-2 text-slate-400 hover:text-white transition-colors bg-slate-900/50 rounded-lg border border-slate-800"
+                                    className="p-2 text-slate-400 hover:text-white transition-colors bg-slate-900 rounded-lg border border-slate-800"
                                 >
                                     <X size={20} />
                                 </button>
                             </div>
 
                             {/* Links */}
-                            <div className="flex-1 overflow-y-auto py-8 px-6 space-y-2">
+                            <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
                                 {navLinks.map((link, idx) => (
                                     <motion.a
                                         key={link.name}
-                                        initial={{ opacity: 0, x: -30 }}
+                                        initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: idx * 0.05 + 0.1 }}
                                         href={link.path}
                                         onClick={() => handleLinkClick(link.path)}
-                                        className={`group flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 ${activeLink === link.path
+                                        className={`group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 ${activeLink === link.path
                                             ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"
-                                            : "text-slate-400 hover:text-white hover:bg-slate-900/50 border border-transparent"
+                                            : "text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent"
                                             }`}
                                     >
                                         <div
@@ -184,14 +184,14 @@ const Navbar = () => {
                             </div>
 
                             {/* CTA */}
-                            <div className="p-6 border-t border-slate-900/50">
+                            <div className="p-6 border-t border-slate-900">
                                 <motion.a
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.4 }}
                                     href="#contact"
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="w-full flex items-center justify-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-4 rounded-xl font-black uppercase text-xs tracking-[0.2em] shadow-lg shadow-cyan-500/20 transition-all duration-300 active:scale-95"
+                                    className="w-full flex items-center justify-center gap-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 py-3.5 rounded-xl font-black uppercase text-xs tracking-[0.2em] shadow-lg shadow-cyan-500/20 transition-all duration-300 active:scale-95"
                                 >
                                     <ArrowRight size={16} /> Get In Touch
                                 </motion.a>

@@ -57,17 +57,17 @@ const ProjectManager = () => {
     };
 
     return (
-        <div className="space-y-8">
-            <h1 className="text-2xl font-bold text-slate-800">Manage Projects</h1>
+        <div className="space-y-6 md:space-y-8">
+            <h1 className="text-xl md:text-2xl font-bold text-slate-800">Manage Projects</h1>
 
             {/* Form */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 className="text-lg font-bold mb-6 text-slate-700">{isEditing ? 'Edit Project' : 'Add New Project'}</h3>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-700">{isEditing ? 'Edit Project' : 'Add New Project'}</h3>
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     <input
                         type="text"
                         placeholder="Project Title"
-                        className="p-3 border rounded-lg outline-none focus:border-cyan-500"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-cyan-500 text-sm"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         required
@@ -75,7 +75,7 @@ const ProjectManager = () => {
                     <input
                         type="text"
                         placeholder="Category (e.g., Social Strategy)"
-                        className="p-3 border rounded-lg outline-none focus:border-cyan-500"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-cyan-500 text-sm"
                         value={formData.category}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                         required
@@ -83,32 +83,32 @@ const ProjectManager = () => {
                     <input
                         type="text"
                         placeholder="Live Link / Case Study URL"
-                        className="p-3 border rounded-lg outline-none focus:border-cyan-500 md:col-span-2"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-cyan-500 md:col-span-2 text-sm"
                         value={formData.link}
                         onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                     />
                     <textarea
                         placeholder="Project Description"
-                        className="p-3 border rounded-lg outline-none focus:border-cyan-500 md:col-span-2 h-24"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-cyan-500 md:col-span-2 h-24 text-sm"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         required
                     />
-                    <div className="md:col-span-2 flex justify-end gap-3">
+                    <div className="md:col-span-2 flex justify-end gap-3 pt-2">
                         {isEditing && (
                             <button
                                 type="button"
                                 onClick={() => { setIsEditing(null); setFormData({ title: '', category: '', description: '', link: '' }); }}
-                                className="px-6 py-2 border rounded-lg hover:bg-slate-50 flex items-center gap-2"
+                                className="px-4 py-2 border rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
                             >
-                                <X size={18} /> Cancel
+                                <X size={16} /> Cancel
                             </button>
                         )}
                         <button
                             type="submit"
-                            className="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700 flex items-center gap-2 font-bold transition-all"
+                            className="bg-cyan-600 text-white px-5 py-2 rounded-lg hover:bg-cyan-700 flex items-center gap-2 font-bold transition-all text-sm"
                         >
-                            {isEditing ? <Check size={18} /> : <Plus size={18} />}
+                            {isEditing ? <Check size={16} /> : <Plus size={16} />}
                             {isEditing ? 'Update Project' : 'Add Project'}
                         </button>
                     </div>
@@ -116,9 +116,9 @@ const ProjectManager = () => {
             </div>
 
             {/* List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {projects.map((project) => (
-                    <div key={project.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative">
+                    <div key={project.id} className="bg-white p-4 md:p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative">
                         <div className="absolute top-4 right-4 flex gap-2">
                             <button
                                 onClick={() => handleEdit(project)}
@@ -136,8 +136,8 @@ const ProjectManager = () => {
                         <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-600 bg-cyan-50 px-2 py-1 rounded">
                             {project.category}
                         </span>
-                        <h3 className="text-lg font-bold text-slate-800 mt-3 mb-2">{project.title}</h3>
-                        <p className="text-slate-500 text-sm line-clamp-3 mb-4">{project.description}</p>
+                        <h3 className="text-base md:text-lg font-bold text-slate-800 mt-2 md:mt-3 mb-1.5 md:mb-2 pr-12">{project.title}</h3>
+                        <p className="text-slate-500 text-xs md:text-sm line-clamp-3 mb-3 md:mb-4">{project.description}</p>
                         {project.link && (
                             <a href={project.link} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-cyan-600 transition-colors">
                                 <ExternalLink size={12} /> View Project

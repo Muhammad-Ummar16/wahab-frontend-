@@ -95,35 +95,35 @@ const CertificatesManager = () => {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-slate-800 uppercase tracking-tight">Manage Certifications</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase tracking-tight">Manage Certifications</h1>
             </div>
 
             {/* Form Card */}
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                <h3 className="text-lg font-bold mb-6 text-slate-700 flex items-center gap-2">
+            <div className="bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-slate-200">
+                <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-700 flex items-center gap-2">
                     <Award className="text-cyan-500" size={20} />
                     {isEditing ? 'Edit Certification' : 'Add New Certification'}
                 </h3>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Certificate Name</label>
+                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Certificate Name</label>
                             <input
                                 type="text"
-                                className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                                className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Google Social Media Marketing"
                                 required
                             />
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Issuer</label>
+                        <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Issuer</label>
                             <input
                                 type="text"
-                                className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                                className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                                 value={formData.issuer}
                                 onChange={(e) => setFormData({ ...formData, issuer: e.target.value })}
                                 placeholder="e.g. Google / Coursera"
@@ -132,23 +132,23 @@ const CertificatesManager = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Year</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Year</label>
                             <input
                                 type="text"
-                                className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                                className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                                 value={formData.year}
                                 onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                                 placeholder="e.g. 2023"
                                 required
                             />
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Verification Link (Optional)</label>
+                        <div className="space-y-1.5 md:space-y-2">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Verification Link (Optional)</label>
                             <input
                                 type="text"
-                                className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all font-mono text-sm"
+                                className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all font-mono text-xs md:text-sm"
                                 value={formData.verificationLink}
                                 onChange={(e) => setFormData({ ...formData, verificationLink: e.target.value })}
                                 placeholder="https://..."
@@ -156,10 +156,10 @@ const CertificatesManager = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Full Description</label>
+                    <div className="space-y-1.5 md:space-y-2">
+                        <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Full Description</label>
                         <textarea
-                            className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all h-32"
+                            className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all h-24 md:h-32 text-sm"
                             value={formData.fullDescription}
                             onChange={(e) => setFormData({ ...formData, fullDescription: e.target.value })}
                             placeholder="Describe what you learned or achieved..."
@@ -168,22 +168,22 @@ const CertificatesManager = () => {
                     </div>
 
                     {/* Image Upload Area */}
-                    <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col md:flex-row gap-6 items-center">
-                        <div className="w-32 h-32 rounded-xl bg-white border border-slate-200 overflow-hidden flex-shrink-0 shadow-inner">
+                    <div className="p-4 md:p-6 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col md:flex-row gap-4 md:gap-6 items-center">
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-white border border-slate-200 overflow-hidden flex-shrink-0 shadow-inner">
                             {formData.image ? (
                                 <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-slate-300">
-                                    <Award size={40} />
+                                    <Award size={32} />
                                 </div>
                             )}
                         </div>
-                        <div className="flex-1 space-y-3 w-full">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Certificate Image</label>
-                            <div className="flex flex-col sm:flex-row gap-3">
+                        <div className="flex-1 space-y-2 md:space-y-3 w-full">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1">Certificate Image</label>
+                            <div className="flex flex-col sm:flex-row gap-2 md:gap-3">
                                 <input
                                     type="text"
-                                    className="flex-1 p-3 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 font-mono text-xs"
+                                    className="flex-1 p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 font-mono text-[10px] md:text-xs"
                                     value={formData.image}
                                     onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                                     placeholder="Image URL"
@@ -198,9 +198,9 @@ const CertificatesManager = () => {
                                     />
                                     <label
                                         htmlFor="cert-upload"
-                                        className={`flex items-center justify-center gap-2 px-6 py-3 bg-white border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-500 hover:bg-cyan-50 transition-all cursor-pointer text-slate-500 font-bold text-sm whitespace-nowrap ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+                                        className={`flex items-center justify-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-white border-2 border-dashed border-slate-300 rounded-xl hover:border-cyan-500 hover:bg-cyan-50 transition-all cursor-pointer text-slate-500 font-bold text-xs md:text-sm whitespace-nowrap ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
                                     >
-                                        <Upload size={18} />
+                                        <Upload size={16} />
                                         {uploading ? 'Uploading...' : 'Upload Image'}
                                     </label>
                                 </div>
@@ -208,7 +208,7 @@ const CertificatesManager = () => {
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4">
+                    <div className="flex justify-end gap-2 md:gap-3 pt-2 md:pt-4">
                         {isEditing && (
                             <button
                                 type="button"
@@ -223,24 +223,24 @@ const CertificatesManager = () => {
                                         verificationLink: ''
                                     });
                                 }}
-                                className="px-8 py-4 border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-600 font-bold uppercase tracking-widest text-xs transition-all"
+                                className="px-6 py-3 md:px-8 md:py-4 border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-600 font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all"
                             >
                                 Cancel
                             </button>
                         )}
                         <button
                             type="submit"
-                            className="bg-cyan-600 text-white px-10 py-4 rounded-xl hover:bg-cyan-700 flex items-center gap-3 font-black uppercase tracking-widest transition-all shadow-lg shadow-cyan-600/20 active:scale-95"
+                            className="bg-cyan-600 text-white px-8 py-3 md:px-10 md:py-4 rounded-xl hover:bg-cyan-700 flex items-center gap-2 md:gap-3 font-black uppercase tracking-widest transition-all shadow-lg shadow-cyan-600/20 active:scale-95 text-xs md:text-sm"
                         >
-                            {isEditing ? <Check size={20} /> : <Plus size={20} />}
-                            {isEditing ? 'Update Certificate' : 'Add Certificate'}
+                            {isEditing ? <Check size={18} /> : <Plus size={18} />}
+                            {isEditing ? 'Update' : 'Add Certificate'}
                         </button>
                     </div>
                 </form>
             </div>
 
-            {/* List Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            {/* Desktop Table */}
+            <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <table className="w-full text-left">
                     <thead className="bg-slate-900 border-b border-slate-800">
                         <tr>
@@ -292,6 +292,45 @@ const CertificatesManager = () => {
                         )}
                     </tbody>
                 </table>
+            </div>
+
+            {/* Mobile Card List */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+                {items.length === 0 ? (
+                    <div className="text-center text-slate-400 italic py-8 bg-white rounded-xl border border-slate-200">No certifications yet.</div>
+                ) : (
+                    items.map((item) => (
+                        <div key={item.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                            <div className="flex gap-4 items-start">
+                                <div className="w-16 h-16 rounded-lg bg-slate-50 border border-slate-100 overflow-hidden flex-shrink-0">
+                                    <img src={item.image} alt="" className="w-full h-full object-cover" />
+                                </div>
+                                <div className="flex-1 min-w-0 pr-16">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] font-mono font-bold bg-cyan-50 text-cyan-600 px-1.5 py-0.5 rounded">{item.year}</span>
+                                    </div>
+                                    <h4 className="font-black text-slate-800 text-sm uppercase tracking-tight truncate">{item.name}</h4>
+                                    <p className="text-xs text-slate-500 font-bold">{item.issuer}</p>
+                                </div>
+                            </div>
+
+                            <div className="absolute top-4 right-4 flex flex-col gap-2">
+                                <button
+                                    onClick={() => handleEdit(item)}
+                                    className="p-2 text-slate-400 hover:text-cyan-600 bg-slate-50 rounded-lg transition-all"
+                                >
+                                    <Edit2 size={16} />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(item.id)}
+                                    className="p-2 text-slate-400 hover:text-rose-600 bg-slate-50 rounded-lg transition-all"
+                                >
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );

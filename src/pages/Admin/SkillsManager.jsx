@@ -73,31 +73,31 @@ const SkillsManager = () => {
     };
 
     return (
-        <div className="space-y-8">
-            <h1 className="text-2xl font-bold text-slate-800">Manage Skills</h1>
+        <div className="space-y-6 md:space-y-8">
+            <h1 className="text-xl md:text-2xl font-bold text-slate-800">Manage Skills</h1>
 
             {/* Category Form */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 className="text-lg font-bold mb-6 text-slate-700">{isEditing ? 'Edit Category' : 'Create New Category'}</h3>
+            <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-700">{isEditing ? 'Edit Category' : 'Create New Category'}</h3>
                 <div className="space-y-6">
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-bold text-slate-500 uppercase">Category Title</label>
+                        <label className="text-xs font-bold text-slate-500 uppercase">Category Title</label>
                         <input
                             type="text"
                             placeholder="e.g., Marketing Tools"
-                            className="p-3 border rounded-lg outline-none focus:border-cyan-500"
+                            className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-cyan-500 text-sm"
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                         />
                     </div>
 
-                    <div className="border-t border-slate-100 pt-6">
-                        <label className="text-sm font-bold text-slate-500 uppercase block mb-4">Add Skills to Category</label>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div className="border-t border-slate-100 pt-4 md:pt-6">
+                        <label className="text-xs font-bold text-slate-500 uppercase block mb-3 md:mb-4">Add Skills to Category</label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-4">
                             <input
                                 type="text"
                                 placeholder="Skill Name (e.g., SEO)"
-                                className="p-2 border rounded-lg outline-none text-sm"
+                                className="p-2.5 border rounded-lg outline-none text-sm"
                                 value={newSkill.name}
                                 onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
                             />
@@ -115,7 +115,7 @@ const SkillsManager = () => {
                             <button
                                 type="button"
                                 onClick={addSkillToCategory}
-                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg flex items-center justify-center gap-2 text-sm font-bold"
+                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2.5 rounded-lg flex items-center justify-center gap-2 text-xs md:text-sm font-bold"
                             >
                                 <Plus size={16} /> Add Skill
                             </button>
@@ -134,37 +134,37 @@ const SkillsManager = () => {
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4">
+                    <div className="flex justify-end gap-3 pt-2">
                         {isEditing && (
                             <button
                                 onClick={() => { setIsEditing(null); setFormData({ title: '', skills: [] }); }}
-                                className="px-6 py-2 border rounded-lg hover:bg-slate-50 flex items-center gap-2"
+                                className="px-4 py-2 border rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
                             >
-                                <X size={18} /> Cancel
+                                <X size={16} /> Cancel
                             </button>
                         )}
                         <button
                             onClick={handleSubmit}
                             disabled={!formData.title}
-                            className="bg-cyan-600 text-white px-6 py-2 rounded-lg hover:bg-cyan-700 flex items-center gap-2 font-bold transition-all disabled:opacity-50"
+                            className="bg-cyan-600 text-white px-5 py-2 rounded-lg hover:bg-cyan-700 flex items-center gap-2 font-bold transition-all disabled:opacity-50 text-sm"
                         >
-                            {isEditing ? <Check size={18} /> : <Plus size={18} />}
-                            {isEditing ? 'Update Category' : 'Save Category'}
+                            {isEditing ? <Check size={16} /> : <Plus size={16} />}
+                            {isEditing ? 'Update' : 'Save'}
                         </button>
                     </div>
                 </div>
             </div>
 
             {/* Categories List */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {(categories || []).map((cat) => (
-                    <div key={cat.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm group">
-                        <div className="flex justify-between items-start mb-4">
+                    <div key={cat.id} className="bg-white p-4 md:p-6 rounded-xl border border-slate-200 shadow-sm group">
+                        <div className="flex justify-between items-start mb-3 md:mb-4">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-cyan-50 text-cyan-600 rounded-lg">
-                                    <Layers size={20} />
+                                    <Layers size={18} />
                                 </div>
-                                <h3 className="font-bold text-lg text-slate-800">{cat.title}</h3>
+                                <h3 className="font-bold text-base md:text-lg text-slate-800">{cat.title}</h3>
                             </div>
                             <div className="flex gap-2">
                                 <button

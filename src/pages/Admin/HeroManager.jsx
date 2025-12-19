@@ -75,28 +75,28 @@ const HeroManager = () => {
     );
 
     return (
-        <div className="max-w-4xl space-y-8">
+        <div className="max-w-4xl space-y-6 md:space-y-8">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-slate-800 uppercase tracking-tight">Manage Hero Section</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 uppercase tracking-tight">Manage Hero Section</h1>
             </div>
 
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">First Name</label>
+            <form onSubmit={handleSubmit} className="bg-white p-5 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-4 md:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="space-y-1.5 md:space-y-2">
+                        <label className="text-[10px] md:text-sm font-bold text-slate-500 uppercase tracking-widest px-1">First Name</label>
                         <input
                             type="text"
-                            className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                            className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                             value={formData.name || ''}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             required
                         />
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Last Name</label>
+                    <div className="space-y-1.5 md:space-y-2">
+                        <label className="text-[10px] md:text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Last Name</label>
                         <input
                             type="text"
-                            className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                            className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                             value={formData.lastName || ''}
                             onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                             required
@@ -104,43 +104,43 @@ const HeroManager = () => {
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Professional Role</label>
+                <div className="space-y-1.5 md:space-y-2">
+                    <label className="text-[10px] md:text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Professional Role</label>
                     <input
                         type="text"
-                        className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                        className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                         value={formData.role || ''}
                         onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                         required
                     />
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Short Bio / Description</label>
+                <div className="space-y-1.5 md:space-y-2">
+                    <label className="text-[10px] md:text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Short Bio / Description</label>
                     <textarea
-                        className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all h-32"
+                        className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all h-24 md:h-32 text-sm"
                         value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         required
                     />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-100 pt-6">
-                    <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Experience Stats (e.g., 5+)</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 border-t border-slate-100 pt-4 md:pt-6">
+                    <div className="space-y-1.5 md:space-y-2">
+                        <label className="text-[10px] md:text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Experience Stats (e.g., 5+)</label>
                         <input
                             type="text"
-                            className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                            className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                             value={formData.experience || ''}
                             onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                             required
                         />
                     </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Projects Done (e.g., 100+)</label>
+                    <div className="space-y-1.5 md:space-y-2">
+                        <label className="text-[10px] md:text-sm font-bold text-slate-500 uppercase tracking-widest px-1">Projects Done (e.g., 100+)</label>
                         <input
                             type="text"
-                            className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all"
+                            className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 transition-all text-sm"
                             value={formData.projects || ''}
                             onChange={(e) => setFormData({ ...formData, projects: e.target.value })}
                             required
@@ -148,19 +148,19 @@ const HeroManager = () => {
                     </div>
                 </div>
 
-                <div className="space-y-4 pt-4 border-t border-slate-100">
-                    <h3 className="text-sm font-bold text-slate-800 uppercase tracking-widest px-1">Visual Assets & Documents</h3>
+                <div className="space-y-3 md:space-y-4 pt-2 md:pt-4 border-t border-slate-100">
+                    <h3 className="text-xs md:text-sm font-bold text-slate-800 uppercase tracking-widest px-1">Visual Assets & Documents</h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         {/* Image Upload */}
-                        <div className="space-y-3">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
+                        <div className="space-y-2 md:space-y-3">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
                                 Profile Image URL
                                 <span className="text-cyan-600 normal-case font-normal">(Auto-updates on upload)</span>
                             </label>
                             <input
                                 type="text"
-                                className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 transition-all font-mono text-xs bg-slate-50"
+                                className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 transition-all font-mono text-xs bg-slate-50"
                                 value={formData.image || ''}
                                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
                                 placeholder="Paste image URL or upload below"
@@ -175,23 +175,23 @@ const HeroManager = () => {
                                 />
                                 <label
                                     htmlFor="profile-upload"
-                                    className={`flex items-center justify-center gap-2 w-full p-3 rounded-xl border-2 border-dashed border-slate-300 hover:border-cyan-500 hover:bg-cyan-50 transition-all cursor-pointer text-slate-500 font-bold text-sm ${uploading.image ? 'opacity-50 pointer-events-none' : ''}`}
+                                    className={`flex items-center justify-center gap-2 w-full p-2.5 md:p-3 rounded-xl border-2 border-dashed border-slate-300 hover:border-cyan-500 hover:bg-cyan-50 transition-all cursor-pointer text-slate-500 font-bold text-xs md:text-sm ${uploading.image ? 'opacity-50 pointer-events-none' : ''}`}
                                 >
-                                    <Upload size={18} />
+                                    <Upload size={16} />
                                     {uploading.image ? 'Uploading Image...' : 'Upload New Image'}
                                 </label>
                             </div>
                         </div>
 
                         {/* CV Upload */}
-                        <div className="space-y-3">
-                            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
+                        <div className="space-y-2 md:space-y-3">
+                            <label className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest px-1 flex items-center justify-between">
                                 Downloadable CV URL
                                 <span className="text-cyan-600 normal-case font-normal">(PDF recommended)</span>
                             </label>
                             <input
                                 type="text"
-                                className="w-full p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 transition-all font-mono text-xs bg-slate-50"
+                                className="w-full p-2.5 md:p-3.5 border border-slate-200 rounded-xl outline-none focus:border-cyan-500 transition-all font-mono text-xs bg-slate-50"
                                 value={formData.cvUrl || ''}
                                 onChange={(e) => setFormData({ ...formData, cvUrl: e.target.value })}
                                 placeholder="Paste CV link or upload below"
@@ -206,9 +206,9 @@ const HeroManager = () => {
                                 />
                                 <label
                                     htmlFor="cv-upload"
-                                    className={`flex items-center justify-center gap-2 w-full p-3 rounded-xl border-2 border-dashed border-slate-300 hover:border-cyan-500 hover:bg-cyan-50 transition-all cursor-pointer text-slate-500 font-bold text-sm ${uploading.cv ? 'opacity-50 pointer-events-none' : ''}`}
+                                    className={`flex items-center justify-center gap-2 w-full p-2.5 md:p-3 rounded-xl border-2 border-dashed border-slate-300 hover:border-cyan-500 hover:bg-cyan-50 transition-all cursor-pointer text-slate-500 font-bold text-xs md:text-sm ${uploading.cv ? 'opacity-50 pointer-events-none' : ''}`}
                                 >
-                                    <Upload size={18} />
+                                    <Upload size={16} />
                                     {uploading.cv ? 'Uploading CV...' : 'Upload CV Document'}
                                 </label>
                             </div>
@@ -216,14 +216,14 @@ const HeroManager = () => {
                     </div>
                 </div>
 
-                <div className="pt-8 block">
+                <div className="pt-4 md:pt-8 block">
                     <button
                         type="submit"
                         disabled={mutation.isPending}
-                        className="bg-cyan-600 text-white px-10 py-4 rounded-xl hover:bg-cyan-700 flex items-center gap-3 font-black uppercase tracking-widest transition-all disabled:opacity-50 shadow-lg shadow-cyan-600/20 active:scale-95"
+                        className="bg-cyan-600 text-white px-8 py-3 md:px-10 md:py-4 rounded-xl hover:bg-cyan-700 flex items-center gap-2 md:gap-3 font-black uppercase tracking-widest transition-all disabled:opacity-50 shadow-lg shadow-cyan-600/20 active:scale-95 text-xs md:text-sm"
                     >
-                        <Save size={20} />
-                        {mutation.isPending ? 'Saving Changes...' : 'Save All Settings'}
+                        <Save size={18} />
+                        {mutation.isPending ? 'Saving...' : 'Save All Settings'}
                     </button>
                 </div>
             </form>

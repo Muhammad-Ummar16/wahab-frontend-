@@ -58,19 +58,19 @@ const EducationManager = () => {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-slate-800">Manage Education</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800">Manage Education</h1>
             </div>
 
             {/* Form */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 className="text-lg font-bold mb-6 text-slate-700">{isEditing ? 'Edit Item' : 'Add New Item'}</h3>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 className="text-base md:text-lg font-bold mb-4 md:mb-6 text-slate-700">{isEditing ? 'Edit Item' : 'Add New Item'}</h3>
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     <input
                         type="text"
                         placeholder="Year (e.g., 2018 - 2022)"
-                        className="p-3 border rounded-lg outline-none focus:border-blue-500"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-blue-500 text-sm"
                         value={formData.year}
                         onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                         required
@@ -78,7 +78,7 @@ const EducationManager = () => {
                     <input
                         type="text"
                         placeholder="Degree"
-                        className="p-3 border rounded-lg outline-none focus:border-blue-500"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-blue-500 text-sm"
                         value={formData.degree}
                         onChange={(e) => setFormData({ ...formData, degree: e.target.value })}
                         required
@@ -86,7 +86,7 @@ const EducationManager = () => {
                     <input
                         type="text"
                         placeholder="Institution"
-                        className="p-3 border rounded-lg outline-none focus:border-blue-500"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-blue-500 text-sm"
                         value={formData.institution}
                         onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
                         required
@@ -94,40 +94,40 @@ const EducationManager = () => {
                     <input
                         type="text"
                         placeholder="Stats (e.g., GPA 3.8)"
-                        className="p-3 border rounded-lg outline-none focus:border-blue-500"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-blue-500 text-sm"
                         value={formData.stats}
                         onChange={(e) => setFormData({ ...formData, stats: e.target.value })}
                     />
                     <textarea
                         placeholder="Description"
-                        className="p-3 border rounded-lg outline-none focus:border-blue-500 md:col-span-2 h-24"
+                        className="p-2.5 md:p-3 border rounded-lg outline-none focus:border-blue-500 md:col-span-2 h-24 text-sm"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         required
                     />
-                    <div className="md:col-span-2 flex justify-end gap-3">
+                    <div className="md:col-span-2 flex justify-end gap-3 pt-2">
                         {isEditing && (
                             <button
                                 type="button"
                                 onClick={() => { setIsEditing(null); setFormData({ year: '', degree: '', institution: '', description: '', stats: '' }); }}
-                                className="px-6 py-2 border rounded-lg hover:bg-slate-50 flex items-center gap-2"
+                                className="px-4 py-2 border rounded-lg hover:bg-slate-50 flex items-center gap-2 text-sm"
                             >
-                                <X size={18} /> Cancel
+                                <X size={16} /> Cancel
                             </button>
                         )}
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 font-bold transition-all"
+                            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 font-bold transition-all text-sm"
                         >
-                            {isEditing ? <Check size={18} /> : <Plus size={18} />}
+                            {isEditing ? <Check size={16} /> : <Plus size={16} />}
                             {isEditing ? 'Update Item' : 'Add Item'}
                         </button>
                     </div>
                 </form>
             </div>
 
-            {/* List */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <table className="w-full text-left">
                     <thead className="bg-slate-50 border-b border-slate-200">
                         <tr>
@@ -164,6 +164,34 @@ const EducationManager = () => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+                {items.map((item) => (
+                    <div key={item.id} className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div className="flex justify-between items-start mb-2">
+                            <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded text-xs font-mono">{item.year}</span>
+                            <div className="flex gap-1">
+                                <button
+                                    onClick={() => handleEdit(item)}
+                                    className="p-1.5 text-slate-400 hover:text-blue-600 bg-slate-50 rounded"
+                                >
+                                    <Edit2 size={14} />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(item.id)}
+                                    className="p-1.5 text-slate-400 hover:text-red-600 bg-slate-50 rounded"
+                                >
+                                    <Trash2 size={14} />
+                                </button>
+                            </div>
+                        </div>
+                        <h4 className="font-bold text-slate-800 text-sm mb-0.5">{item.degree}</h4>
+                        <p className="text-xs text-slate-500 mb-2">{item.institution}</p>
+                        <p className="text-xs text-slate-600 line-clamp-2">{item.description}</p>
+                    </div>
+                ))}
             </div>
         </div>
     );
