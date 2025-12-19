@@ -37,7 +37,7 @@ const Projects = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {projects.map((project) => (
+                    {(projects || []).map((project) => (
                         <div key={project.id} className="group relative bg-slate-900/40 border border-slate-800 rounded-3xl overflow-hidden hover:border-cyan-500/30 transition-all backdrop-blur-sm">
                             <div className="p-8 space-y-4">
                                 <div className="flex justify-between items-start">

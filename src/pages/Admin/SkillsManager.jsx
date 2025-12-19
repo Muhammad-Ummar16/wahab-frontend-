@@ -159,7 +159,7 @@ const SkillsManager = () => {
 
             {/* Categories List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {categories.map((cat) => (
+                {(categories || []).map((cat) => (
                     <div key={cat.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm group">
                         <div className="flex justify-between items-start mb-4">
                             <div className="flex items-center gap-3">
@@ -184,7 +184,7 @@ const SkillsManager = () => {
                             </div>
                         </div>
                         <div className="space-y-3">
-                            {cat.skills.map((s, si) => (
+                            {(cat.skills || []).map((s, si) => (
                                 <div key={si} className="space-y-1">
                                     <div className="flex justify-between text-xs font-medium">
                                         <span>{s.name}</span>

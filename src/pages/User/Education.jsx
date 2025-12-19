@@ -38,7 +38,7 @@ const Education = () => {
                 <div className="max-w-4xl mx-auto space-y-12">
                     {/* Education Timeline */}
                     <div className="relative border-l-2 border-slate-800 ml-4 md:ml-0 space-y-12 pl-8">
-                        {educationData.map((edu, index) => (
+                        {(educationData || []).map((edu, index) => (
                             <div key={index} className="relative group animate-in slide-in-from-left duration-700 h-full">
                                 {/* Dot on timeline */}
                                 <div className="absolute -left-[41px] top-0 w-5 h-5 bg-cyan-500 rounded-full border-4 border-slate-950 group-hover:scale-125 transition-transform"></div>

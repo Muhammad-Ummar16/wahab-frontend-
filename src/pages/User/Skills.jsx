@@ -28,7 +28,6 @@ const Skills = () => {
         };
         fetchSkills();
     }, []);
-    //this is testing
     if (loading) return null;
 
     return (
@@ -41,7 +40,7 @@ const Skills = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {skillCategories.map((category, idx) => (
+                    {(skillCategories || []).map((category, idx) => (
                         <div key={idx} className="p-8 bg-slate-900/50 border border-slate-800 rounded-3xl hover:border-cyan-500/30 transition-all group backdrop-blur-sm">
                             <div className="flex items-center gap-4 mb-8">
                                 <div className="p-3 bg-cyan-500/10 text-cyan-400 rounded-xl group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all duration-500">
@@ -51,7 +50,7 @@ const Skills = () => {
                             </div>
 
                             <div className="space-y-6">
-                                {category.skills.map((skill, sIdx) => (
+                                {(category.skills || []).map((skill, sIdx) => (
                                     <div key={sIdx} className="space-y-2">
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-slate-300 font-medium">{skill.name}</span>

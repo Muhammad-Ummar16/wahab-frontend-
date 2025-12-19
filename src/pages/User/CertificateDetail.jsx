@@ -15,7 +15,7 @@ const CertificateDetail = () => {
             try {
                 const res = await axios.get(`${API_URL}/api/certifications`);
                 // Since our toy backend returns an array for certifications, we find the one by ID
-                const found = res.data.find(c => c.id.toString() === id);
+                const found = (res.data || []).find(c => c.id.toString() === id);
                 setCert(found);
             } catch (error) {
                 console.error("Error fetching certificate detail:", error);

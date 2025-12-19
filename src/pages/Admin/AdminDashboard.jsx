@@ -19,9 +19,9 @@ const AdminDashboard = () => {
                     axios.get(`${API_URL}/api/certifications`)
                 ]);
                 setStats({
-                    education: edu.data.length,
-                    skills: skills.data.length,
-                    certifications: certs.data.length
+                    education: (edu.data || []).length,
+                    skills: (skills.data || []).length,
+                    certifications: (certs.data || []).length
                 });
             } catch (error) {
                 console.error("Error fetching stats:", error);
