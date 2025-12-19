@@ -9,7 +9,7 @@ import Contact from './Contact';
 
 const Home = () => {
     return (
-        <div className="bg-transparent">
+        <main className="relative isolate z-0">  {/* isolate + low z breaks hero stacking */}
             <Hero />
             <About />
             <Education />
@@ -17,7 +17,7 @@ const Home = () => {
             <Projects />
             <Certificates />
             <Contact />
-        </div>
+        </main>
     );
 };
 
